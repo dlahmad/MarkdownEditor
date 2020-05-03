@@ -31,7 +31,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MarkdownEditor</RootNamespace>
     <AssemblyName>MarkdownEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
@@ -87,6 +87,7 @@
     <Compile Include="LanguageService\MardownAuthoringScope.cs" />
     <Compile Include="LanguageService\MarkdownObjectExtensions.cs" />
     <Compile Include="Options\EmphasisStyle.cs" />
+    <Compile Include="PlantUML\PlantUMLStringCreator.cs" />
     <Compile Include="ProvideBraceCompletionAttribute.cs" />
     <Compile Include="SuggestedActions\Actions\AddMissingFileAction.cs" />
     <Compile Include="SuggestedActions\Actions\ConvertToOrderedList.cs" />
@@ -229,6 +230,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Ionic.Zlib">
+      <Version>1.9.1.5</Version>
+    </PackageReference>
     <PackageReference Include="Madskristensen.VisualStudio.SDK">
       <Version>14.0.66-pre</Version>
     </PackageReference>

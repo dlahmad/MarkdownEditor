@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Markdig;
 using Markdig.Extensions.Footers;
+using Markdig.Helpers;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using Microsoft.VisualStudio.Text;
@@ -35,6 +36,7 @@ namespace MarkdownEditor.Parsing
                 .UsePragmaLines()
                 .Build();
         }
+
 
         public static MarkdownPipeline Pipeline { get; }
 
@@ -69,7 +71,11 @@ namespace MarkdownEditor.Parsing
             // Try first to parse a document with all exceptions active
             try
             {
+                var repl = new PlantUMLMarkdownReplacer();
+
+                text = repl.ReplaceMarkDown(text);
                 markdownDocument = Markdown.Parse(text, pipeline);
+                //![alt text]()
             }
             catch (Exception ex)
             {
@@ -90,6 +96,21 @@ namespace MarkdownEditor.Parsing
                 markdownDocument.SetData(AttachedExceptionKey, ex);
             }
             return markdownDocument;
+        }
+
+        private static void Walk(MarkdownObject markdownObject)
+        {
+            var links = markdownObject
+                .Descendants()
+                .Where(o => o is ParagraphBlock)
+                .Cast<ParagraphBlock>();
+
+            var p = new ParagraphBlock();
+            p.Inline = new ContainerInline();
+           
+            //p.Inline.AppendChild(new Url)
+
+            int y0 = 2;
         }
 
         public static event EventHandler<ParsingEventArgs> Parsed;
