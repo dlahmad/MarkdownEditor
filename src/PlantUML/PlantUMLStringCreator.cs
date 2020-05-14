@@ -8,19 +8,16 @@ using System.Text.RegularExpressions;
 class PlantUMLMarkdownReplacer
 {
 
-    public string PlantUMLServerUrl { get; private set; }
-
     public string ReplaceRegex { get; private set; }
 
     public Dictionary<char, char> TranslationDict { get; private set; }
 
-    public PlantUMLMarkdownReplacer(string plantumlServerUrl)
+    public PlantUMLMarkdownReplacer()
     {
         var plant_uml_alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
         var base64_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         TranslationDict = base64_alphabet.Zip(plant_uml_alphabet, (f, s) => new Tuple<char, char>(f, s)).ToDictionary(f => f.Item1, f => f.Item2);
         ReplaceRegex = @"```plantuml((.|\n)*?)```";
-        PlantUMLServerUrl = plantumlServerUrl is null ? "" : plantumlServerUrl;
     }
 
     private byte[] Compress(byte[] a)
@@ -39,9 +36,9 @@ class PlantUMLMarkdownReplacer
         }
     }
 
-    public string CreateString(string plant_uml_description)
+    public string CreateString(string plantUMLDescription, string plantUMLUrl)
     {
-        var utf8_text = Encoding.UTF8.GetBytes(plant_uml_description.Replace("\r\n", "\n"));
+        var utf8_text = Encoding.UTF8.GetBytes(plantUMLDescription.Replace("\r\n", "\n"));
 
         var compressed = Compress(utf8_text);
         var fskip = compressed.Skip(2);
@@ -52,12 +49,12 @@ class PlantUMLMarkdownReplacer
         return translated_plant_uml_string;
     }
 
-    public string ReplaceMarkDown(string markdown_document)
+    public string ReplaceMarkDown(string markdownDocument, string plantUMLServerUrl)
     {
-        var res = Regex.Replace(markdown_document, ReplaceRegex, m => {
+        var res = Regex.Replace(markdownDocument, ReplaceRegex, m => {
             var platuml_text = m.Groups[1].Value;
-            var plant_string = CreateString(platuml_text);
-            var plant_url = PlantUMLServerUrl + plant_string;
+            var plant_string = CreateString(platuml_text, plantUMLServerUrl);
+            var plant_url = plantUMLServerUrl + plant_string;
             var replacement = $"![alt text]({plant_url})";
             return replacement;
         });

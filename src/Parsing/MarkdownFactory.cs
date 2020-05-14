@@ -18,7 +18,7 @@ namespace MarkdownEditor.Parsing
         private const string AttachedExceptionKey = "attached-exception";
         public static object _syncRoot = new object();
         private static readonly ConditionalWeakTable<ITextSnapshot, MarkdownDocument> CachedDocuments = new ConditionalWeakTable<ITextSnapshot, MarkdownDocument>();
-        private static PlantUMLMarkdownReplacer _PlantUMLMarkdownReplacer = new PlantUMLMarkdownReplacer(MarkdownEditorPackage.Options.PlantUMLServerPath);
+        private static PlantUMLMarkdownReplacer _PlantUMLMarkdownReplacer = new PlantUMLMarkdownReplacer();
 
         static MarkdownFactory()
         {
@@ -73,7 +73,7 @@ namespace MarkdownEditor.Parsing
             try
             {
                 // replace plant uml relevant blocks by using regex
-                text = _PlantUMLMarkdownReplacer.ReplaceMarkDown(text);
+                text = _PlantUMLMarkdownReplacer.ReplaceMarkDown(text, MarkdownEditorPackage.Options.PlantUMLServerPath);
 
                 // parse the markdown
                 markdownDocument = Markdown.Parse(text, pipeline);
