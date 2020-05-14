@@ -14,13 +14,13 @@ class PlantUMLMarkdownReplacer
 
     public Dictionary<char, char> TranslationDict { get; private set; }
 
-    public PlantUMLMarkdownReplacer(string plantumlServerUrl = null)
+    public PlantUMLMarkdownReplacer(string plantumlServerUrl)
     {
         var plant_uml_alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
         var base64_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         TranslationDict = base64_alphabet.Zip(plant_uml_alphabet, (f, s) => new Tuple<char, char>(f, s)).ToDictionary(f => f.Item1, f => f.Item2);
         ReplaceRegex = @"```plantuml((.|\n)*?)```";
-        PlantUMLServerUrl = plantumlServerUrl is null ? "http://www.plantuml.com/plantuml/png/" : plantumlServerUrl;
+        PlantUMLServerUrl = plantumlServerUrl is null ? "" : plantumlServerUrl;
     }
 
     private byte[] Compress(byte[] a)

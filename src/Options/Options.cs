@@ -97,5 +97,11 @@ namespace MarkdownEditor
         [Description("Uses the softline break as hardline break extension.")]
         [DefaultValue(false)]
         public bool UseSoftlineBreakAsHardlineBreak { get; set; } = false;
+
+        [Category("PlantUML")]
+        [DisplayName("PlantUML server path")]
+        [Description("Path to the PlantUML server that the extension is using.")]
+        [DefaultValue("http://shs-airad-plantuml.westeurope.azurecontainer.io:8080/png/")]
+        public string PlantUMLServerPath { get; set; } = "http://shs-airad-plantuml.westeurope.azurecontainer.io:8080/png/";
     }
 }
